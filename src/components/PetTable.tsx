@@ -6,52 +6,113 @@ import { Button } from "./ui/button";
 interface Pet {
   id: number;
   mutation: string;
-  rarity: "common" | "gold" | "rainbow" | "legendary";
+  rarity: "common" | "gold" | "rainbow";
   petName: string;
   generation: string;
+  generationValue: number; // numeric value for filtering
   player: string;
   time: string;
 }
 
-const mockPets: Pet[] = [
-  { id: 1, mutation: "", rarity: "common", petName: "Las Sis", generation: "$17.5M/s", player: "Player_42", time: "06:24:40" },
-  { id: 2, mutation: "", rarity: "gold", petName: "Tralalita Tralala", generation: "21m", player: "CyberHunter", time: "06:12:54" },
-  { id: 3, mutation: "", rarity: "rainbow", petName: "Strawberry Elephant", generation: "$9.7B/s", player: "NeonDreamer", time: "06:44:24" },
-  { id: 4, mutation: "", rarity: "legendary", petName: "Cosmic Dragon", generation: "$127B/s", player: "QuantumX", time: "06:50:12" },
-  { id: 5, mutation: "", rarity: "rainbow", petName: "Lotus Phoenix", generation: "$8.2B/s", player: "VoidWalker", time: "06:38:15" },
-  { id: 6, mutation: "", rarity: "gold", petName: "Crystal Wolf", generation: "45m", player: "StarCoder", time: "06:55:33" },
-  { id: 7, mutation: "", rarity: "common", petName: "Shadow Cat", generation: "$12.3M/s", player: "GlitchMaster", time: "07:01:22" },
-  { id: 8, mutation: "", rarity: "legendary", petName: "Void Serpent", generation: "$215B/s", player: "NeonKnight", time: "07:05:44" },
+const brainrotData = [
+  { name: "Strawberry Elephant", value: 350, baseChance: 1 },
+  { name: "Dragon Cannelloni", value: 250, baseChance: 1.2 },
+  { name: "Burguro & Fryuro", value: 150, baseChance: 1.5 },
+  { name: "La Secret Combinasion", value: 125, baseChance: 2 },
+  { name: "Spooky & Pumpky", value: 80, baseChance: 3 },
+  { name: "Spaghetti Tualetti", value: 60, baseChance: 4 },
+  { name: "Garama & Madundung", value: 50, baseChance: 5 },
+  { name: "Ketchuru & Musturu", value: 42.5, baseChance: 6 },
+  { name: "La Supreme Combinasion", value: 40, baseChance: 7 },
+  { name: "Tictac Sahur", value: 37.5, baseChance: 8 },
+  { name: "Ketupat Kepat", value: 35, baseChance: 9 },
+  { name: "Tang Tang Keletang", value: 33.5, baseChance: 10 },
+  { name: "Los Tacoritas", value: 32, baseChance: 11 },
+  { name: "Eviledon", value: 31.5, baseChance: 12 },
+  { name: "Los Primos", value: 31, baseChance: 13 },
+  { name: "Esok Sekolah", value: 30, baseChance: 14 },
+  { name: "Tralaledon", value: 27.5, baseChance: 15 },
+  { name: "Chillin Chili", value: 25, baseChance: 16 },
+  { name: "La Spooky Grande", value: 24.5, baseChance: 17 },
+  { name: "Los Bros", value: 24, baseChance: 18 },
+  { name: "La Extinct Grande", value: 23.5, baseChance: 19 },
+  { name: "Las Sis", value: 17.5, baseChance: 25 },
+  { name: "Tacorita Bicicleta", value: 16.5, baseChance: 27 },
+  { name: "Nuclearo Dinossauro", value: 15, baseChance: 30 },
+  { name: "Mariachi Corazoni", value: 12.5, baseChance: 35 },
+  { name: "La Grande Combinasion", value: 10, baseChance: 40 },
+  { name: "Chicleteira Bicicleteira", value: 3.5, baseChance: 60 },
+  { name: "Quesadilla Crocodila", value: 3, baseChance: 65 },
+  { name: "Pot Hotspot", value: 2.5, baseChance: 70 },
+  { name: "To to to Sahur", value: 2.2, baseChance: 73 },
+  { name: "Perrito Burrito", value: 1, baseChance: 85 },
+  { name: "Graipuss Medussi", value: 1, baseChance: 85 },
 ];
+
+const generateRarity = (baseChance: number): "common" | "gold" | "rainbow" => {
+  const rainbowChance = 2;
+  const goldChance = 5;
+  
+  const rand = Math.random() * 100;
+  if (rand < rainbowChance) return "rainbow";
+  if (rand < rainbowChance + goldChance) return "gold";
+  return "common";
+};
+
+const generateMockPets = (): Pet[] => {
+  const players = ["xX_Pro_Xx", "CyberHunter", "NeonDreamer", "QuantumX", "VoidWalker", "StarCoder", "GlitchMaster", "NeonKnight", "ShadowRunner", "PixelMaster"];
+  
+  return brainrotData.slice(0, 8).map((brainrot, index) => ({
+    id: Date.now() + index,
+    mutation: "",
+    rarity: generateRarity(brainrot.baseChance),
+    petName: brainrot.name,
+    generation: `${brainrot.value}M/s`,
+    generationValue: brainrot.value,
+    player: players[Math.floor(Math.random() * players.length)],
+    time: new Date(Date.now() - Math.random() * 3600000).toLocaleTimeString("en-US", { hour12: false }),
+  }));
+};
+
+const mockPets: Pet[] = generateMockPets();
 
 export const PetTable = () => {
   const [pets, setPets] = useState<Pet[]>(mockPets);
   const [filteredPets, setFilteredPets] = useState<Pet[]>(mockPets);
   const [activeFilter, setActiveFilter] = useState("ALL");
   const [searchQuery, setSearchQuery] = useState("");
+  const [minGeneration, setMinGeneration] = useState("");
   const [sortField, setSortField] = useState<keyof Pet | null>(null);
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const [autoRefresh, setAutoRefresh] = useState(true);
 
   useEffect(() => {
     if (!autoRefresh) return;
-    const interval = setInterval(() => {
-      // Simulate new pets appearing
-      const rarities: Array<"common" | "gold" | "rainbow" | "legendary"> = ["common", "gold", "rainbow", "legendary"];
-      const names = ["Nova Beast", "Cyber Hawk", "Digital Unicorn", "Pixel Dragon", "Neon Tiger"];
+    
+    const spawnNewPet = () => {
+      const players = ["xX_Pro_Xx", "CyberHunter", "NeonDreamer", "QuantumX", "VoidWalker", "StarCoder", "GlitchMaster", "NeonKnight"];
+      const randomBrainrot = brainrotData[Math.floor(Math.random() * brainrotData.length)];
+      
       const newPet: Pet = {
         id: Date.now(),
         mutation: "",
-        rarity: rarities[Math.floor(Math.random() * rarities.length)],
-        petName: names[Math.floor(Math.random() * names.length)],
-        generation: `$${(Math.random() * 100).toFixed(1)}${Math.random() > 0.5 ? "B" : "M"}/s`,
-        player: "NewPlayer",
+        rarity: generateRarity(randomBrainrot.baseChance),
+        petName: randomBrainrot.name,
+        generation: `${randomBrainrot.value}M/s`,
+        generationValue: randomBrainrot.value,
+        player: players[Math.floor(Math.random() * players.length)],
         time: new Date().toLocaleTimeString("en-US", { hour12: false }),
       };
-      setPets((prev) => [newPet, ...prev.slice(0, 9)]);
-    }, 20000);
-
-    return () => clearInterval(interval);
+      setPets((prev) => [newPet, ...prev.slice(0, 49)]);
+      
+      // Random interval for next spawn
+      const intervals = [500, 1000, 2000];
+      const nextInterval = intervals[Math.floor(Math.random() * intervals.length)];
+      setTimeout(spawnNewPet, nextInterval);
+    };
+    
+    const timer = setTimeout(spawnNewPet, 2000);
+    return () => clearTimeout(timer);
   }, [autoRefresh]);
 
   useEffect(() => {
@@ -70,6 +131,14 @@ export const PetTable = () => {
       );
     }
 
+    // Minimum generation filter
+    if (minGeneration) {
+      const minValue = parseFloat(minGeneration);
+      if (!isNaN(minValue)) {
+        filtered = filtered.filter((pet) => pet.generationValue >= minValue);
+      }
+    }
+
     // Sort
     if (sortField) {
       filtered = [...filtered].sort((a, b) => {
@@ -83,7 +152,7 @@ export const PetTable = () => {
     }
 
     setFilteredPets(filtered);
-  }, [pets, activeFilter, searchQuery, sortField, sortDirection]);
+  }, [pets, activeFilter, searchQuery, minGeneration, sortField, sortDirection]);
 
   const handleSort = (field: keyof Pet) => {
     if (sortField === field) {
@@ -96,8 +165,6 @@ export const PetTable = () => {
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
-      case "legendary":
-        return "text-neon-red";
       case "gold":
         return "text-neon-yellow";
       case "rainbow":
@@ -109,14 +176,12 @@ export const PetTable = () => {
 
   const getRarityTag = (rarity: string) => {
     switch (rarity) {
-      case "legendary":
-        return "[LEGENDARY]";
       case "gold":
         return "[Gold]";
       case "rainbow":
         return "[Rainbow]";
       default:
-        return "";
+        return "[common]";
     }
   };
 
@@ -125,7 +190,7 @@ export const PetTable = () => {
       {/* Filter Tabs */}
       <div className="flex items-center justify-between border-b border-primary/30 bg-card/30">
         <div className="flex">
-          {["ALL", "legendary", "rainbow", "gold", "common"].map((filter) => (
+          {["ALL", "rainbow", "gold", "common"].map((filter) => (
             <button
               key={filter}
               onClick={() => setActiveFilter(filter)}
@@ -147,7 +212,16 @@ export const PetTable = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search..."
-              className="pl-8 w-48 h-8 bg-input border-primary/30 text-foreground text-xs font-mono focus:border-primary focus:glow-cyan transition-all"
+              className="pl-8 w-32 h-8 bg-input border-primary/30 text-foreground text-xs font-mono focus:border-primary focus:glow-cyan transition-all"
+            />
+          </div>
+          <div className="relative">
+            <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs text-primary font-bold">+</span>
+            <Input
+              value={minGeneration}
+              onChange={(e) => setMinGeneration(e.target.value)}
+              placeholder="Min M/s"
+              className="pl-6 w-24 h-8 bg-input border-primary/30 text-foreground text-xs font-mono focus:border-primary focus:glow-cyan transition-all"
             />
           </div>
           <Button

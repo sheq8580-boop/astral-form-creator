@@ -19,8 +19,8 @@ export const StatsPanel = () => {
       glowClass: "glow-cyan",
     },
     {
-      label: "Gen/Hour",
-      value: "$127.5B",
+      label: "Server Tracking",
+      value: String(Math.floor(Math.random() * (6402 - 4600 + 1)) + 4600),
       icon: TrendingUp,
       color: "text-accent",
       glowClass: "glow-green",
@@ -48,8 +48,8 @@ export const StatsPanel = () => {
           if (stat.label === "Active Scans") {
             return { ...stat, value: String(Math.floor(Math.random() * 300 + 200)) };
           }
-          if (stat.label === "Gen/Hour") {
-            return { ...stat, value: `$${(Math.random() * 200 + 100).toFixed(1)}B` };
+          if (stat.label === "Server Tracking") {
+            return { ...stat, value: String(Math.floor(Math.random() * (6402 - 4600 + 1)) + 4600) };
           }
           return stat;
         })
