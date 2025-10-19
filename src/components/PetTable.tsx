@@ -126,8 +126,7 @@ export const PetTable = () => {
     // Search filter
     if (searchQuery) {
       filtered = filtered.filter((pet) =>
-        pet.petName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        pet.player.toLowerCase().includes(searchQuery.toLowerCase())
+        pet.petName.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
@@ -236,7 +235,7 @@ export const PetTable = () => {
       </div>
 
       {/* Table Header */}
-      <div className="grid grid-cols-[120px_1fr_140px_120px_100px] gap-4 px-4 py-3 border-b border-primary/20 bg-card/30">
+      <div className="grid grid-cols-[120px_1fr_140px_100px] gap-4 px-4 py-3 border-b border-primary/20 bg-card/30">
         <button onClick={() => handleSort("mutation")} className="text-primary font-bold text-sm text-left hover:text-glow-cyan transition-all flex items-center gap-1">
           Mutation <ArrowUpDown className="w-3 h-3" />
         </button>
@@ -245,9 +244,6 @@ export const PetTable = () => {
         </button>
         <button onClick={() => handleSort("generation")} className="text-primary font-bold text-sm text-left hover:text-glow-cyan transition-all flex items-center gap-1">
           Generation <ArrowUpDown className="w-3 h-3" />
-        </button>
-        <button onClick={() => handleSort("player")} className="text-primary font-bold text-sm text-left hover:text-glow-cyan transition-all flex items-center gap-1">
-          Player <ArrowUpDown className="w-3 h-3" />
         </button>
         <button onClick={() => handleSort("time")} className="text-primary font-bold text-sm text-left hover:text-glow-cyan transition-all flex items-center gap-1">
           Time <ArrowUpDown className="w-3 h-3" />
@@ -259,7 +255,7 @@ export const PetTable = () => {
         {filteredPets.map((pet) => (
           <div
             key={pet.id}
-            className={`grid grid-cols-[120px_1fr_140px_120px_100px] gap-4 px-4 py-3 border-b border-primary/10 hover:bg-primary/5 transition-all ${getRarityColor(
+            className={`grid grid-cols-[120px_1fr_140px_100px] gap-4 px-4 py-3 border-b border-primary/10 hover:bg-primary/5 transition-all ${getRarityColor(
               pet.rarity
             )} group`}
           >
@@ -268,7 +264,6 @@ export const PetTable = () => {
             </div>
             <div className="group-hover:text-glow-cyan transition-all">{pet.petName}</div>
             <div className="font-bold">{pet.generation}</div>
-            <div className="text-sm">{pet.player}</div>
             <div className="text-muted-foreground text-sm">{pet.time}</div>
           </div>
         ))}
