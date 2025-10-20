@@ -15,7 +15,7 @@ const Index = () => {
         {/* Header */}
         <header className="mb-6">
           <h1 className="text-4xl font-bold text-primary text-glow-cyan mb-2">
-            CYBER<span className="text-secondary">PET</span> <span className="text-accent">TERMINAL</span>
+            INDE<span className="text-secondary">VICES</span>
           </h1>
           <div className="h-1 w-80 bg-gradient-to-r from-primary via-secondary to-accent animate-pulse-glow"></div>
         </header>

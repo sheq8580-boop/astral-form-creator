@@ -20,7 +20,7 @@ export const StatsPanel = () => {
     },
     {
       label: "Server Tracking",
-      value: String(Math.floor(Math.random() * (6402 - 4600 + 1)) + 4600),
+      value: String(Math.floor(Math.random() * (6000 - 5000 + 1)) + 5000),
       icon: TrendingUp,
       color: "text-accent",
       glowClass: "glow-green",
@@ -34,7 +34,7 @@ export const StatsPanel = () => {
     },
     {
       label: "Online Users",
-      value: "1,842",
+      value: String(Math.floor(Math.random() * (1850 - 1800 + 1)) + 1800),
       icon: Users,
       color: "text-neon-yellow",
       glowClass: "border-neon-yellow/30",
@@ -49,12 +49,21 @@ export const StatsPanel = () => {
             return { ...stat, value: String(Math.floor(Math.random() * 300 + 200)) };
           }
           if (stat.label === "Server Tracking") {
-            return { ...stat, value: String(Math.floor(Math.random() * (6402 - 4600 + 1)) + 4600) };
+            const currentValue = parseInt(stat.value.replace(/,/g, ''));
+            const change = Math.floor(Math.random() * 21) - 10; // -10 to +10
+            const newValue = Math.max(5000, Math.min(6000, currentValue + change));
+            return { ...stat, value: String(newValue) };
+          }
+          if (stat.label === "Online Users") {
+            const currentValue = parseInt(stat.value.replace(/,/g, ''));
+            const change = Math.floor(Math.random() * 11) - 5; // -5 to +5
+            const newValue = Math.max(1800, Math.min(1850, currentValue + change));
+            return { ...stat, value: String(newValue.toLocaleString()) };
           }
           return stat;
         })
       );
-    }, 3000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);

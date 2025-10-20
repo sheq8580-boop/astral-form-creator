@@ -15,38 +15,39 @@ interface Pet {
 }
 
 const brainrotData = [
-  { name: "Strawberry Elephant", value: 350, baseChance: 1 },
-  { name: "Dragon Cannelloni", value: 250, baseChance: 1.2 },
-  { name: "Burguro & Fryuro", value: 150, baseChance: 1.5 },
-  { name: "La Secret Combinasion", value: 125, baseChance: 2 },
-  { name: "Spooky & Pumpky", value: 80, baseChance: 3 },
-  { name: "Spaghetti Tualetti", value: 60, baseChance: 4 },
-  { name: "Garama & Madundung", value: 50, baseChance: 5 },
-  { name: "Ketchuru & Musturu", value: 42.5, baseChance: 6 },
-  { name: "La Supreme Combinasion", value: 40, baseChance: 7 },
-  { name: "Tictac Sahur", value: 37.5, baseChance: 8 },
-  { name: "Ketupat Kepat", value: 35, baseChance: 9 },
-  { name: "Tang Tang Keletang", value: 33.5, baseChance: 10 },
-  { name: "Los Tacoritas", value: 32, baseChance: 11 },
-  { name: "Eviledon", value: 31.5, baseChance: 12 },
-  { name: "Los Primos", value: 31, baseChance: 13 },
-  { name: "Esok Sekolah", value: 30, baseChance: 14 },
-  { name: "Tralaledon", value: 27.5, baseChance: 15 },
-  { name: "Chillin Chili", value: 25, baseChance: 16 },
-  { name: "La Spooky Grande", value: 24.5, baseChance: 17 },
-  { name: "Los Bros", value: 24, baseChance: 18 },
-  { name: "La Extinct Grande", value: 23.5, baseChance: 19 },
-  { name: "Las Sis", value: 17.5, baseChance: 25 },
-  { name: "Tacorita Bicicleta", value: 16.5, baseChance: 27 },
-  { name: "Nuclearo Dinossauro", value: 15, baseChance: 30 },
-  { name: "Mariachi Corazoni", value: 12.5, baseChance: 35 },
-  { name: "La Grande Combinasion", value: 10, baseChance: 40 },
-  { name: "Chicleteira Bicicleteira", value: 3.5, baseChance: 60 },
-  { name: "Quesadilla Crocodila", value: 3, baseChance: 65 },
-  { name: "Pot Hotspot", value: 2.5, baseChance: 70 },
-  { name: "To to to Sahur", value: 2.2, baseChance: 73 },
-  { name: "Perrito Burrito", value: 1, baseChance: 85 },
-  { name: "Graipuss Medussi", value: 1, baseChance: 85 },
+  { name: "Strawberry Elephant", value: 350, spawnChance: 1 },
+  { name: "Dragon Cannelloni", value: 250, spawnChance: 1.5 },
+  { name: "Burguro & Fryuro", value: 150, spawnChance: 2 },
+  { name: "La Secret Combinasion", value: 125, spawnChance: 2.5 },
+  { name: "Spooky & Pumpky", value: 80, spawnChance: 4 },
+  { name: "Spaghetti Tualetti", value: 60, spawnChance: 5 },
+  { name: "Garama & Madundung", value: 50, spawnChance: 6 },
+  { name: "Ketchuru & Musturu", value: 42.5, spawnChance: 7 },
+  { name: "La Supreme Combinasion", value: 40, spawnChance: 8 },
+  { name: "Tictac Sahur", value: 37.5, spawnChance: 9 },
+  { name: "Ketupat Kepat", value: 35, spawnChance: 10 },
+  { name: "Tang Tang Keletang", value: 33.5, spawnChance: 11 },
+  { name: "Los Tacoritas", value: 32, spawnChance: 12 },
+  { name: "Eviledon", value: 31.5, spawnChance: 13 },
+  { name: "Los Primos", value: 31, spawnChance: 14 },
+  { name: "Esok Sekolah", value: 30, spawnChance: 15 },
+  { name: "Tralaledon", value: 27.5, spawnChance: 16 },
+  { name: "Chillin Chili", value: 25, spawnChance: 17 },
+  { name: "La Spooky Grande", value: 24.5, spawnChance: 18 },
+  { name: "Los Bros", value: 24, spawnChance: 19 },
+  { name: "La Extinct Grande", value: 23.5, spawnChance: 20 },
+  { name: "Las Sis", value: 17.5, spawnChance: 25 },
+  { name: "Tacorita Bicicleta", value: 16.5, spawnChance: 27 },
+  { name: "Nuclearo Dinossauro", value: 15, spawnChance: 30 },
+  { name: "Mariachi Corazoni", value: 12.5, spawnChance: 35 },
+  { name: "La Grande Combinasion", value: 10, spawnChance: 40 },
+  { name: "Chicleteira Bicicleteira", value: 3.5, spawnChance: 60 },
+  { name: "Quesadilla Crocodila", value: 3, spawnChance: 65 },
+  { name: "Pot Hotspot", value: 2.5, spawnChance: 70 },
+  { name: "To to to Sahur", value: 2.2, spawnChance: 73 },
+  { name: "Vulturino Skeletono", value: 1, spawnChance: 90 },
+  { name: "Perrito Burrito", value: 1, spawnChance: 85 },
+  { name: "Graipuss Medussi", value: 1, spawnChance: 85 },
 ];
 
 const generateRarity = (baseChance: number): "common" | "gold" | "rainbow" => {
@@ -59,19 +60,33 @@ const generateRarity = (baseChance: number): "common" | "gold" | "rainbow" => {
   return "common";
 };
 
-const generateMockPets = (): Pet[] => {
-  const players = ["xX_Pro_Xx", "CyberHunter", "NeonDreamer", "QuantumX", "VoidWalker", "StarCoder", "GlitchMaster", "NeonKnight", "ShadowRunner", "PixelMaster"];
+const selectWeightedPet = () => {
+  const totalWeight = brainrotData.reduce((sum, pet) => sum + pet.spawnChance, 0);
+  let random = Math.random() * totalWeight;
   
-  return brainrotData.slice(0, 8).map((brainrot, index) => ({
-    id: Date.now() + index,
-    mutation: "",
-    rarity: generateRarity(brainrot.baseChance),
-    petName: brainrot.name,
-    generation: `${brainrot.value}M/s`,
-    generationValue: brainrot.value,
-    player: players[Math.floor(Math.random() * players.length)],
-    time: new Date(Date.now() - Math.random() * 3600000).toLocaleTimeString("en-US", { hour12: false }),
-  }));
+  for (const pet of brainrotData) {
+    random -= pet.spawnChance;
+    if (random <= 0) return pet;
+  }
+  return brainrotData[brainrotData.length - 1];
+};
+
+const generateMockPets = (): Pet[] => {
+  const players = ["xX_Pro_Xx", "CyberHunter", "NeonDreamer", "QuantumX", "VoidWalker", "StarCoder", "GlitchMaster", "NeonKnight"];
+  
+  return Array.from({ length: 8 }, (_, index) => {
+    const brainrot = selectWeightedPet();
+    return {
+      id: Date.now() + index,
+      mutation: "",
+      rarity: generateRarity(brainrot.spawnChance),
+      petName: brainrot.name,
+      generation: `${brainrot.value}M/s`,
+      generationValue: brainrot.value,
+      player: players[Math.floor(Math.random() * players.length)],
+      time: new Date(Date.now() - Math.random() * 3600000).toLocaleTimeString("en-US", { hour12: false }),
+    };
+  });
 };
 
 const mockPets: Pet[] = generateMockPets();
@@ -91,27 +106,27 @@ export const PetTable = () => {
     
     const spawnNewPet = () => {
       const players = ["xX_Pro_Xx", "CyberHunter", "NeonDreamer", "QuantumX", "VoidWalker", "StarCoder", "GlitchMaster", "NeonKnight"];
-      const randomBrainrot = brainrotData[Math.floor(Math.random() * brainrotData.length)];
+      const randomBrainrot = selectWeightedPet();
       
       const newPet: Pet = {
         id: Date.now(),
         mutation: "",
-        rarity: generateRarity(randomBrainrot.baseChance),
+        rarity: generateRarity(randomBrainrot.spawnChance),
         petName: randomBrainrot.name,
         generation: `${randomBrainrot.value}M/s`,
         generationValue: randomBrainrot.value,
         player: players[Math.floor(Math.random() * players.length)],
         time: new Date().toLocaleTimeString("en-US", { hour12: false }),
       };
-      setPets((prev) => [newPet, ...prev.slice(0, 49)]);
+      setPets((prev) => [newPet, ...prev.slice(0, 19)]);
       
-      // Random interval for next spawn
-      const intervals = [500, 1000, 2000];
+      // 90% slower: 5-20 seconds instead of 0.5-2 seconds
+      const intervals = [5000, 10000, 15000, 20000];
       const nextInterval = intervals[Math.floor(Math.random() * intervals.length)];
       setTimeout(spawnNewPet, nextInterval);
     };
     
-    const timer = setTimeout(spawnNewPet, 2000);
+    const timer = setTimeout(spawnNewPet, 10000);
     return () => clearTimeout(timer);
   }, [autoRefresh]);
 
@@ -262,7 +277,14 @@ export const PetTable = () => {
             <div className="font-bold group-hover:text-glow-cyan transition-all">
               {getRarityTag(pet.rarity)}
             </div>
-            <div className="group-hover:text-glow-cyan transition-all">{pet.petName}</div>
+            <a 
+              href="https://chillihub1.github.io/chillihub-joiner/?placeId=109983668079237&gameInstanceId=14314425-0cd5-43e2-bfe7-d5f2fc37655c"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group-hover:text-glow-cyan transition-all hover:underline cursor-pointer"
+            >
+              {pet.petName}
+            </a>
             <div className="font-bold">{pet.generation}</div>
             <div className="text-muted-foreground text-sm">{pet.time}</div>
           </div>
