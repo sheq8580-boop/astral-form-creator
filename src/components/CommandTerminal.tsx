@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Terminal, Send } from "lucide-react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { useMode } from "../contexts/ModeContext";
 
 interface Command {
   id: number;
@@ -11,6 +12,7 @@ interface Command {
 }
 
 export const CommandTerminal = () => {
+  const { isRealMode, setRealMode } = useMode();
   const [commands, setCommands] = useState<Command[]>([
     {
       id: 1,
@@ -29,7 +31,7 @@ export const CommandTerminal = () => {
 
     switch (input.toLowerCase().trim()) {
       case "help":
-        output = "Available commands: help, status, clear, scan, filter [rarity]";
+        output = "Available commands: help, status, clear, scan, filter [rarity], real";
         break;
       case "status":
         output = `SYSTEM ONLINE | PETS TRACKED: ${Math.floor(Math.random() * 1000)} | ACTIVE SCANS: 3`;
@@ -40,6 +42,12 @@ export const CommandTerminal = () => {
         return;
       case "scan":
         output = "Initiating deep scan... Found 12 new rare pets in the last hour";
+        break;
+      case "real":
+        setRealMode(!isRealMode);
+        output = !isRealMode 
+          ? "REAL MODE ACTIVATED | Speed: 90% faster | Filter: 200M/s+ only" 
+          : "REAL MODE DEACTIVATED | Speed: Normal | Filter: All pets";
         break;
       default:
         if (input.toLowerCase().startsWith("filter")) {

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Search, ArrowUpDown, RefreshCw } from "lucide-react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { useMode } from "../contexts/ModeContext";
 
 interface Pet {
   id: number;
@@ -92,6 +93,7 @@ const generateMockPets = (): Pet[] => {
 const mockPets: Pet[] = generateMockPets();
 
 export const PetTable = () => {
+  const { isRealMode } = useMode();
   const [pets, setPets] = useState<Pet[]>(mockPets);
   const [filteredPets, setFilteredPets] = useState<Pet[]>(mockPets);
   const [activeFilter, setActiveFilter] = useState("ALL");
@@ -106,7 +108,25 @@ export const PetTable = () => {
     
     const spawnNewPet = () => {
       const players = ["xX_Pro_Xx", "CyberHunter", "NeonDreamer", "QuantumX", "VoidWalker", "StarCoder", "GlitchMaster", "NeonKnight"];
-      const randomBrainrot = selectWeightedPet();
+      
+      // Filter pets based on real mode
+      const availablePets = isRealMode 
+        ? brainrotData.filter(pet => pet.value >= 200)
+        : brainrotData;
+      
+      if (availablePets.length === 0) return;
+      
+      const totalWeight = availablePets.reduce((sum, pet) => sum + pet.spawnChance, 0);
+      let random = Math.random() * totalWeight;
+      
+      let randomBrainrot = availablePets[availablePets.length - 1];
+      for (const pet of availablePets) {
+        random -= pet.spawnChance;
+        if (random <= 0) {
+          randomBrainrot = pet;
+          break;
+        }
+      }
       
       const newPet: Pet = {
         id: Date.now(),
@@ -120,15 +140,17 @@ export const PetTable = () => {
       };
       setPets((prev) => [newPet, ...prev.slice(0, 19)]);
       
-      // 90% slower: 5-20 seconds instead of 0.5-2 seconds
-      const intervals = [5000, 10000, 15000, 20000];
-      const nextInterval = intervals[Math.floor(Math.random() * intervals.length)];
-      setTimeout(spawnNewPet, nextInterval);
+      // Real mode: 90% faster (0.5-2s), Normal: 5-20s
+      const intervalTime = isRealMode
+        ? Math.random() * 1500 + 500    // 0.5-2 seconds
+        : Math.random() * 15000 + 5000; // 5-20 seconds
+      
+      setTimeout(spawnNewPet, intervalTime);
     };
     
-    const timer = setTimeout(spawnNewPet, 10000);
+    const timer = setTimeout(spawnNewPet, isRealMode ? 1000 : 10000);
     return () => clearTimeout(timer);
-  }, [autoRefresh]);
+  }, [autoRefresh, isRealMode]);
 
   useEffect(() => {
     let filtered = pets;
